@@ -1,0 +1,127 @@
+material yellow
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.7 0.7 0.6
+
+			texture_unit
+			{
+				texture havok_gc_body.png
+			}
+		}
+	}
+}
+
+material blackLeather
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.7 0.7 0.6
+
+			texture_unit
+			{
+				texture havok_gc_body.png
+			}
+		}
+	}
+}
+
+material HandsSkin
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.7 0.7 0.6
+
+			texture_unit
+			{
+				texture havok_gc_body.png
+			}
+		}
+	}
+}
+
+material Skin
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.7 0.7 0.6
+
+			texture_unit
+			{
+				texture havok_gc_head.png
+			}
+		}
+	}
+}
+
+material Lips
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.7 0.7 0.6
+
+			texture_unit
+			{
+				texture havok_gc_head.png
+			}
+		}
+	}
+}
+
+material eye
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.7 0.7 0.6
+
+			texture_unit
+			{
+				texture havok_gc_head.png
+			}
+		}
+	}
+}
+
+material headInside
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.7 0.7 0.6
+
+			texture_unit
+			{
+				texture havok_gc_head.png
+			}
+		}
+	}
+}
+
+material hair
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.7 0.7 0.6
+
+			texture_unit
+			{
+				texture havok_gc_head.png
+			}
+		}
+	}
+}

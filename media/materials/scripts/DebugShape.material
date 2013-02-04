@@ -1,0 +1,10 @@
+material Debug/DebugLine
+{
+	technique
+	{
+		pass
+		{
+			colour_op_ex source2 src_current src_manual 1 1 1
+		}
+	}
+}
