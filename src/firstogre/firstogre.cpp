@@ -14,8 +14,14 @@ class MyApplication : public XkOgreApplication
 
 int main()
 {
-	MyApplication app;
-    app.go();
+    try{
+	    MyApplication app;
+        app.go();
+    }
+    catch(Ogre::Exception& e)
+    {
+        MessageBox(NULL, e.getDescription().c_str(), "Ogre::Exception", MB_OK);
+    }
 
     return 0;
 }
