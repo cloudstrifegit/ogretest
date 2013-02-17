@@ -67,9 +67,9 @@ void XkOgreApplication::chooseSceneManager(void)
 void XkOgreApplication::createCamera(void)
 {
     m_pCamera = m_pSceneMgr->createCamera("PlayerCam");
-    m_pCamera->setPosition(Ogre::Vector3(0, 0, 500));
+    m_pCamera->setPosition(Ogre::Vector3(0, 0, 5));
     m_pCamera->lookAt(Ogre::Vector3(0, 0, -300));
-    m_pCamera->setNearClipDistance(5);
+    m_pCamera->setNearClipDistance(1);
 }
 
 void XkOgreApplication::createFrameListener(void)
@@ -82,7 +82,7 @@ void XkOgreApplication::createFrameListener(void)
 void XkOgreApplication::createViewports(void)
 {
     Ogre::Viewport* vp = m_pWindow->addViewport(m_pCamera);
-    vp->setBackgroundColour(Ogre::ColourValue(0, 0, 0));
+    vp->setBackgroundColour(Ogre::ColourValue(135.0f/255.0f, 206.0f/255.0f, 235.0f/255.0f));
 
     m_pCamera->setAspectRatio(
         Ogre::Real(vp->getActualWidth()) / Ogre::Real(vp->getActualHeight()));

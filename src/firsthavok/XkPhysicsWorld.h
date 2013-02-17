@@ -1,7 +1,10 @@
 #ifndef XK_PHYSICS_WORLD_H
 #define XK_PHYSICS_WORLD_H
 
+#include <string>
+#include <map>
 #include "XkSingleton.h"
+#include "XkStepListener.h"
 
 class hkMemoryRouter;
 class hkJobThreadPool;
@@ -11,11 +14,13 @@ class hkpWorld;
 namespace Xk
 {
 
-class XkPhysicsWorld
+class PhysicsWorld
 {
 public:
-    XkPhysicsWorld();
-    ~XkPhysicsWorld();
+    typedef std::map<std::string, StepListener*> MAP_ENTITY;
+
+    PhysicsWorld();
+    ~PhysicsWorld();
 
     static void errorReport(const char* msg, void* userArgGivenToInit);
 
@@ -23,6 +28,8 @@ public:
     bool initialize();
     void uninitialize();
     bool step(float fTime);
+
+    bool addEntity(std::string strName, StepListener* pEntity);
 
 private:
     bool createPhysicsWorld();
@@ -41,9 +48,11 @@ private:
 
     float m_accumulator;
     float m_stepSize;
+
+    MAP_ENTITY  m_mapEntity;
 };
 
-typedef Singleton<XkPhysicsWorld> PhysicsWorld;
+typedef Singleton<PhysicsWorld> world;
 
 }//namespace Xk
 

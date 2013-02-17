@@ -1,5 +1,6 @@
 AUX_SOURCE_DIRECTORY(. SRC_LIST)
-SET(SRC_LIST ${SRC_LIST} ../XkOgreApplication.cpp)
+AUX_SOURCE_DIRECTORY(.. SRC_LIST_EXT)
+SET(SRC_LIST ${SRC_LIST} ${SRC_LIST_EXT})
 
 SET(havoklib $ENV{HAVOK_SDK_HOME}/Lib/win32_vs2010/$(ConfigurationName)_multithreaded)
 SET(havokinc $ENV{HAVOK_SDK_HOME}/Source)

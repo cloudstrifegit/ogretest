@@ -30,6 +30,55 @@ static Ogre::Quaternion toQuaternion(const hkQuaternion& q)
     return Ogre::Quaternion(q(3), q(0), q(1), q(2));
 }
 
+static Ogre::ManualObject* BuildDebugBox(Ogre::SceneManager* pMgr, float fHalfSize, std::string strName, std::string strMatName)
+{
+    Ogre::ManualObject* pObj = pMgr->createManualObject(strName);
+    pObj->begin(strMatName, Ogre::RenderOperation::OT_LINE_LIST);
+
+    //AB
+    pObj->position(-fHalfSize, fHalfSize, -fHalfSize);
+    pObj->position(fHalfSize, fHalfSize, -fHalfSize);
+    //BC
+    pObj->position(fHalfSize, fHalfSize, -fHalfSize);
+    pObj->position(fHalfSize, fHalfSize, fHalfSize);
+    //CD
+    pObj->position(fHalfSize, fHalfSize, fHalfSize);
+    pObj->position(-fHalfSize, fHalfSize, fHalfSize);
+    //DA
+    pObj->position(-fHalfSize, fHalfSize, fHalfSize);
+    pObj->position(-fHalfSize, fHalfSize, -fHalfSize);
+
+    //EF
+    pObj->position(-fHalfSize, -fHalfSize, -fHalfSize);
+    pObj->position(fHalfSize, -fHalfSize, -fHalfSize);
+    //FG
+    pObj->position(fHalfSize, -fHalfSize, -fHalfSize);
+    pObj->position(fHalfSize, -fHalfSize, fHalfSize);
+    //GH
+    pObj->position(fHalfSize, -fHalfSize, fHalfSize);
+    pObj->position(-fHalfSize, -fHalfSize, fHalfSize);
+    //HE
+    pObj->position(-fHalfSize, -fHalfSize, fHalfSize);
+    pObj->position(-fHalfSize, -fHalfSize, -fHalfSize);
+
+    //AE
+    pObj->position(-fHalfSize, fHalfSize, -fHalfSize);
+    pObj->position(-fHalfSize, -fHalfSize, -fHalfSize);
+    //BF
+    pObj->position(fHalfSize, fHalfSize, -fHalfSize);
+    pObj->position(fHalfSize, -fHalfSize, -fHalfSize);
+    //CG
+    pObj->position(fHalfSize, fHalfSize, fHalfSize);
+    pObj->position(fHalfSize, -fHalfSize, fHalfSize);
+    //DH
+    pObj->position(-fHalfSize, fHalfSize, fHalfSize);
+    pObj->position(-fHalfSize, -fHalfSize, fHalfSize);
+
+    pObj->end();
+
+    return pObj;
+}
+
 }//namespace Xk
 
 #endif

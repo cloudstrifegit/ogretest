@@ -61,23 +61,23 @@
 namespace Xk
 {
 
-XkPhysicsWorld::XkPhysicsWorld() :
+PhysicsWorld::PhysicsWorld() :
     m_accumulator(0.0f), m_stepSize(1.0f / 60.0f)
 {
 
 }
 
-XkPhysicsWorld::~XkPhysicsWorld()
+PhysicsWorld::~PhysicsWorld()
 {
 
 }
 
-void XkPhysicsWorld::errorReport(const char* msg, void* userArgGivenToInit)
+void PhysicsWorld::errorReport(const char* msg, void* userArgGivenToInit)
 {
 	printf("%s", msg);
 }
 
-bool XkPhysicsWorld::initialize()
+bool PhysicsWorld::initialize()
 {
 	m_memoryRouter = hkMemoryInitUtil::initDefault(hkMallocAllocator::m_defaultMallocAllocator,
 		hkMemorySystem::FrameInfo(500*1024));
@@ -104,7 +104,7 @@ bool XkPhysicsWorld::initialize()
 	return createPhysicsWorld();
 }
 
-void XkPhysicsWorld::uninitialize()
+void PhysicsWorld::uninitialize()
 {
 	{
 		m_physicsWorld->markForWrite();
@@ -123,7 +123,7 @@ void XkPhysicsWorld::uninitialize()
 	hkMemoryInitUtil::quit();
 }
 
-bool XkPhysicsWorld::step(float fTime)
+bool PhysicsWorld::step(float fTime)
 {
 	m_accumulator += fTime;
 	if(m_accumulator < m_stepSize) return false;
@@ -141,10 +141,28 @@ bool XkPhysicsWorld::step(float fTime)
 	hkMonitorStream::getInstance().reset();
 	m_threadPool->clearTimerData();
 
+    for(MAP_ENTITY::iterator it = m_mapEntity.begin(); it != m_mapEntity.end(); it ++) {
+        it->second->step(m_stepSize);
+    }
+
 	return true;
 }
 
-bool XkPhysicsWorld::createPhysicsWorld()
+bool PhysicsWorld::addEntity(std::string strName, StepListener* pEntity)
+{
+    MAP_ENTITY::iterator it = m_mapEntity.find(strName);
+    if(it != m_mapEntity.end()) return false;
+
+    m_mapEntity.insert(MAP_ENTITY::value_type(strName, pEntity));
+
+    m_physicsWorld->markForWrite();
+    m_physicsWorld->addEntity(pEntity->getRigidBody());
+    m_physicsWorld->unmarkForWrite();
+
+    return true;
+}
+
+bool PhysicsWorld::createPhysicsWorld()
 {
 	hkpWorldCinfo worldInfo;
 	worldInfo.m_simulationType = hkpWorldCinfo::SIMULATION_TYPE_MULTITHREADED;
