@@ -80,7 +80,7 @@ void PhysicsWorld::errorReport(const char* msg, void* userArgGivenToInit)
 bool PhysicsWorld::initialize()
 {
 	m_memoryRouter = hkMemoryInitUtil::initDefault(hkMallocAllocator::m_defaultMallocAllocator,
-		hkMemorySystem::FrameInfo(500*1024));
+		hkMemorySystem::FrameInfo(5000*1024));
 
 	hkBaseSystem::init(m_memoryRouter, errorReport);
 
@@ -109,6 +109,7 @@ void PhysicsWorld::uninitialize()
 	{
 		m_physicsWorld->markForWrite();
 		m_physicsWorld->removeReference();
+        m_physicsWorld->unmarkForWrite();
 	}
 
 #ifdef XK_HAVOK_USE_VDB
@@ -192,6 +193,6 @@ bool PhysicsWorld::createPhysicsWorld()
 #endif
 
 	return true;
-}
+} 
 
 }//namespace Xk
