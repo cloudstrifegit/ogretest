@@ -70,6 +70,7 @@ void XkOgreApplication::createCamera(void)
     m_pCamera->setPosition(Ogre::Vector3(0, 0, 5));
     m_pCamera->lookAt(Ogre::Vector3(0, 0, -300));
     m_pCamera->setNearClipDistance(1);
+    m_pCamera->setFarClipDistance( 1000.0f );
 }
 
 void XkOgreApplication::createFrameListener(void)

@@ -163,6 +163,16 @@ bool PhysicsWorld::addEntity(std::string strName, StepListener* pEntity)
     return true;
 }
 
+void PhysicsWorld::lock()
+{
+    m_physicsWorld->lock();
+}
+
+void PhysicsWorld::unlock()
+{
+    m_physicsWorld->unlock();
+}
+
 bool PhysicsWorld::createPhysicsWorld()
 {
 	hkpWorldCinfo worldInfo;

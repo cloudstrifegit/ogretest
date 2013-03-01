@@ -30,6 +30,28 @@ static Ogre::Quaternion toQuaternion(const hkQuaternion& q)
     return Ogre::Quaternion(q(3), q(0), q(1), q(2));
 }
 
+static Ogre::ManualObject* BuildDebugAxis( Ogre::SceneManager* pMgr, float fLineLen, std::string strName )
+{
+    Ogre::ManualObject* pObj = pMgr->createManualObject( strName );
+    pObj->begin( "BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST );
+
+    pObj->position( 0, 0, 0 );
+    pObj->colour( 1.0f, 0, 0 );
+    pObj->position( fLineLen, 0, 0 );
+    
+    pObj->position( 0, 0, 0 );
+    pObj->colour( 0, 1.0f, 0 );
+    pObj->position( 0, fLineLen, 0 );
+
+    pObj->position( 0, 0, 0 );
+    pObj->colour( 0, 0, 1.0f );
+    pObj->position( 0, 0, fLineLen );
+
+    pObj->end();
+
+    return pObj;
+}
+
 static Ogre::ManualObject* BuildDebugBox(Ogre::SceneManager* pMgr, float fHalfSize, std::string strName, std::string strMatName)
 {
     Ogre::ManualObject* pObj = pMgr->createManualObject(strName);

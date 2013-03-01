@@ -31,6 +31,9 @@ public:
 
     bool addEntity(std::string strName, StepListener* pEntity);
 
+    void lock();
+    void unlock();
+
 private:
     bool createPhysicsWorld();
 

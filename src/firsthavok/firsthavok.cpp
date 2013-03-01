@@ -23,6 +23,9 @@ public:
     {
         Xk::world::instance().step(evt.timeSinceLastFrame);
 
+        Ogre::Vector3 dir = mCamera->getDirection();
+        printf("dir( %f, %f, %f )\n", dir.x, dir.y, dir.z );
+
         return true;
     }
 };
