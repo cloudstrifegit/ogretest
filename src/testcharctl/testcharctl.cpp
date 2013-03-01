@@ -201,6 +201,26 @@ public:
 
         g_pThirdCamera = new ThirdPersonCamera( m_pCamera, g_pRBChar->getNode() );
         g_pThirdCamera->setup();
+
+        //´´½¨Ò»¶Ñbox
+        int nCount = 5;
+        for(int i=0; i<nCount; i++) {
+            for(int j=0; j<nCount; j++) {
+                for(int k=0; k<nCount; k++) {
+                    rbinfo.m_position = hkVector4(i, 50.0f + j, k);
+                    std::string strBoxName = "box_" + Ogre::StringConverter::toString(i) + Ogre::StringConverter::toString(j) + Ogre::StringConverter::toString(k);
+                    std::string strDbgBoxName = "box_debug_" + Ogre::StringConverter::toString(i) + Ogre::StringConverter::toString(j) + Ogre::StringConverter::toString(k);
+                    Xk::PhysicsBody* pBox = new Xk::PhysicsBody(m_pSceneMgr, strBoxName, rbinfo);
+                    Xk::world::instance().addEntity(strBoxName, pBox);
+
+                    //pBox->getNode()->scale(0.2, 0.2, 0.2);
+                    Ogre::Entity* pBoxEntity = m_pSceneMgr->createEntity(strBoxName, "1x1x1box.mesh");
+                    pBox->getNode()->attachObject(pBoxEntity);
+                    Ogre::ManualObject* pDbgEntity = Xk::BuildDebugBox(m_pSceneMgr, 0.5f, strDbgBoxName, "Ogre/Skin");
+                    pBox->getNode()->attachObject(pDbgEntity);
+                }
+            }
+        }
     }
 
 };

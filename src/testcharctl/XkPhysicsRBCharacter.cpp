@@ -27,6 +27,7 @@ PhysicsRBCharacter::PhysicsRBCharacter(Ogre::SceneManager* psm, std::string strN
     state->removeReference();
 
     hkpCharacterStateJumping* stateJmp = new hkpCharacterStateJumping();
+    printf("jmp height: %f\n", stateJmp->getJumpHeight() );
     stateJmp->setJumpHeight(20.0f);
     manager->registerState( stateJmp, HK_CHARACTER_JUMPING );
     stateJmp->removeReference();
@@ -87,14 +88,9 @@ void PhysicsRBCharacter::applyMovement(
     stepInfo.m_endTime = m_actualTime;
 
     input.m_stepInfo = stepInfo;
-    input.m_characterGravity.set( 0, -9, 0 );
+    input.m_characterGravity.set( 0, -16, 0 );
     input.m_velocity = m_pCharRigidBody->getLinearVelocity();
     input.m_position = m_pCharRigidBody->getPosition();
-    /*
-    if(input.m_velocity(1) > 1) {
-        printf("input.m_veclocity (%f, %f, %f)\n", input.m_velocity(0), input.m_velocity(1), input.m_velocity(2));
-    }
-    */
 
     m_pCharRigidBody->checkSupport( stepInfo, input.m_surfaceInfo );
 
