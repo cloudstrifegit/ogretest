@@ -27,9 +27,13 @@ public:
         m_timer = 0.0f;
     }
     
+    bool processUnbufferedKeyInput(const FrameEvent& evt)
+    {
+        return true;
+    }
+
     bool keyPressed( const OIS::KeyEvent &arg )
     {
-        //g_pThirdCamera->injectKeyDown( arg );
         if( arg.key == OIS::KC_SPACE ) {
             if( g_pRBChar->GetState() == HK_CHARACTER_ON_GROUND ) {
                 m_bJump = true;
@@ -43,7 +47,6 @@ public:
 
     bool keyReleased( const OIS::KeyEvent &arg )
     {
-        //g_pThirdCamera->injectKeyUp( arg );
         if( arg.key == OIS::KC_SPACE ) {
             m_bJump = false;
         }
@@ -130,6 +133,11 @@ public:
 
     void createScene(void)
     {
+        /*
+        m_pCamera->setPosition( 20, 20, 20 );
+        m_pCamera->lookAt( 0, 0, 0 );
+        */
+
         Ogre::Light* pLight = m_pSceneMgr->createLight();
         pLight->setPosition( 100.0f, 100.0f ,100.0f );
 
@@ -154,12 +162,12 @@ public:
         hkpShape* standCapsule = new hkpCapsuleShape( top, bottom, 0.5f );
 
         hkpCharacterRigidBodyCinfo info;
-        info.m_mass = 10.0f;
+        info.m_mass = 100.0f;
         info.m_shape = standCapsule;
         
         info.m_maxForce = 2000.0f;
         info.m_up = hkVector4( 0, 1, 0 );
-        info.m_position.set( 10.0f, 80.0f, 6.0f );
+        info.m_position.set( 10.0f, 10.0f, 6.0f );
         info.m_maxSlope = HK_REAL_PI/2.0f;
 
         g_pRBChar = new Xk::PhysicsRBCharacter( m_pSceneMgr, "character", info );
@@ -173,14 +181,17 @@ public:
         Ogre::ManualObject* pDebugAxis = Xk::BuildDebugAxis( m_pSceneMgr, 3.0f, "debugaxis" );
         g_pRBChar->getNode()->attachObject( pDebugAxis );
 
+        Ogre::ManualObject* pDebugPlane = Xk::BuildDebugPlane( m_pSceneMgr, 10.0f, 5.0f, "debugplane" );
+        g_pRBChar->getNode()->attachObject( pDebugPlane );
+
         hkVector4 boxSize(0.5f, 0.5f, 0.5f);
         hkpBoxShape* boxShape = new hkpBoxShape(boxSize, 0);
 
         hkpRigidBodyCinfo rbinfo;
-        rbinfo.m_mass = 100.0f;
+        rbinfo.m_mass = 10.0f;
         hkMassProperties massPro;
         hkVector4 halfExt(0.5f, 0.5f, 0.5f);
-        hkpInertiaTensorComputer::computeBoxVolumeMassProperties(halfExt, info.m_mass, massPro);
+        hkpInertiaTensorComputer::computeBoxVolumeMassProperties(halfExt, rbinfo.m_mass, massPro);
 
         rbinfo.m_mass = massPro.m_mass;
         rbinfo.m_centerOfMass = massPro.m_centerOfMass;
@@ -203,11 +214,11 @@ public:
         g_pThirdCamera->setup();
 
         //´´½¨Ò»¶Ñbox
-        int nCount = 5;
+        int nCount = 10;
         for(int i=0; i<nCount; i++) {
             for(int j=0; j<nCount; j++) {
                 for(int k=0; k<nCount; k++) {
-                    rbinfo.m_position = hkVector4(i, 50.0f + j, k);
+                    rbinfo.m_position = hkVector4(i, 0.0f + j, k);
                     std::string strBoxName = "box_" + Ogre::StringConverter::toString(i) + Ogre::StringConverter::toString(j) + Ogre::StringConverter::toString(k);
                     std::string strDbgBoxName = "box_debug_" + Ogre::StringConverter::toString(i) + Ogre::StringConverter::toString(j) + Ogre::StringConverter::toString(k);
                     Xk::PhysicsBody* pBox = new Xk::PhysicsBody(m_pSceneMgr, strBoxName, rbinfo);
@@ -221,6 +232,7 @@ public:
                 }
             }
         }
+        
     }
 
 };

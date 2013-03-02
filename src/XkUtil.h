@@ -52,6 +52,35 @@ static Ogre::ManualObject* BuildDebugAxis( Ogre::SceneManager* pMgr, float fLine
     return pObj;
 }
 
+static Ogre::ManualObject* BuildDebugPlane( Ogre::SceneManager* pMgr, float fLong, float fWidth, std::string strName )
+{
+    Ogre::ManualObject* pObj = pMgr->createManualObject( strName );
+    pObj->begin( "BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST );
+
+    float fPosX = fLong / 2;
+    float fPosZ = fWidth / 2;
+
+    pObj->position( fPosX, 0, fPosZ );
+    pObj->colour( 1.0f, 1.0f, 1.0f );
+    pObj->position( fPosX, 0, -fPosZ );
+
+    pObj->position( fPosX, 0, -fPosZ );
+    pObj->colour( 1.0f, 1.0f, 1.0f );
+    pObj->position( -fPosX, 0, -fPosZ );
+
+    pObj->position( -fPosX, 0, -fPosZ );
+    pObj->colour( 1.0f, 1.0f, 1.0f );
+    pObj->position( -fPosX, 0, fPosZ );
+
+    pObj->position( -fPosX, 0, fPosZ );
+    pObj->colour( 1.0f, 1.0f, 1.0f );
+    pObj->position( fPosX, 0, fPosZ );
+
+    pObj->end();
+
+    return pObj;
+}
+
 static Ogre::ManualObject* BuildDebugBox(Ogre::SceneManager* pMgr, float fHalfSize, std::string strName, std::string strMatName)
 {
     Ogre::ManualObject* pObj = pMgr->createManualObject(strName);

@@ -68,7 +68,7 @@ public:
         m_pCameraPivot->setPosition( m_pBodyNode->getPosition() + Ogre::Vector3::UNIT_Y * CAM_HEIGHT );
 
         Ogre::Vector3 goalOffset = m_pCameraGoal->_getDerivedPosition() - m_pCameraNode->getPosition();
-        m_pCameraNode->translate( goalOffset * deltaTime * 15.0 ); //
+        m_pCameraNode->translate( goalOffset * deltaTime * 20.0 ); //
         m_pCameraNode->lookAt( m_pCameraPivot->_getDerivedPosition(), Ogre::Node::TS_WORLD );
     }
 

@@ -22,7 +22,8 @@ public:
 public:
     bool step(float fTime);
 
-    void applyMovement( const float walkSpeed, 
+    void applyMovement( 
+        const float walkSpeed, 
         const float sideStepSpeed,
         const Ogre::Vector3& forwardDirection,
         const bool bJump );
