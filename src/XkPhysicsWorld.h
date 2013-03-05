@@ -6,6 +6,8 @@
 #include "XkSingleton.h"
 #include "XkStepListener.h"
 
+#include <Physics/Dynamics/World/hkpWorld.h>
+
 class hkMemoryRouter;
 class hkJobThreadPool;
 class hkJobQueue;
@@ -23,6 +25,11 @@ public:
     ~PhysicsWorld();
 
     static void errorReport(const char* msg, void* userArgGivenToInit);
+
+    hkpWorld* getPhysicsWorld()
+    {
+        return m_physicsWorld;
+    }
 
 public:
     bool initialize();
