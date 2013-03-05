@@ -2,6 +2,7 @@
 #include "XkOgreFrameListener.h"
 #include "ThirdPersonCamera.h"
 #include "XkUtil.h"
+#include "XkDebugRenderable.h"
 #include "XkPhysicsBody.h"
 #include "XkPhysicsWorld.h"
 #include "XkPhysicsRBCharacter.h"
@@ -14,6 +15,8 @@
 //Global
 ThirdPersonCamera* g_pThirdCamera;
 Xk::PhysicsRBCharacter* g_pRBChar;
+Xk::PhysicsBody* g_pBoxBody;
+Xk::debug::Line* g_pLine;
 
 class MyFrameListener : public XkOgreFrameListener, public OIS::KeyListener, public OIS::MouseListener
 {
@@ -76,6 +79,11 @@ public:
 
         g_pThirdCamera->updateBody( evt.timeSinceLastFrame );
         g_pThirdCamera->updateCamera( evt.timeSinceLastFrame );
+
+        Ogre::Vector3 beginPos = g_pBoxBody->getNode()->getPosition();
+        Ogre::Vector3 endPos = g_pRBChar->getNode()->getPosition();
+
+        g_pLine->update( beginPos, endPos );
 
         Xk::world::instance().step(evt.timeSinceLastFrame);
 
@@ -181,7 +189,7 @@ public:
         Ogre::ManualObject* pDebugAxis = Xk::BuildDebugAxis( m_pSceneMgr, 3.0f, "debugaxis" );
         g_pRBChar->getNode()->attachObject( pDebugAxis );
 
-        Ogre::ManualObject* pDebugPlane = Xk::BuildDebugPlane( m_pSceneMgr, 10.0f, 5.0f, "debugplane" );
+        Ogre::ManualObject* pDebugPlane = Xk::debug::createPlane( m_pSceneMgr, 10.0f, 5.0f, "debugplane", Ogre::ColourValue::Blue );
         g_pRBChar->getNode()->attachObject( pDebugPlane );
 
         hkVector4 boxSize(0.5f, 0.5f, 0.5f);
@@ -204,11 +212,18 @@ public:
         hkVector4 pos(0, 10.0f, 0);
         rbinfo.m_position = pos;
         
-        Xk::PhysicsBody* pBody = new Xk::PhysicsBody(m_pSceneMgr, "box1", rbinfo);
-        Xk::world::instance().addEntity("box1", pBody);
+        g_pBoxBody = new Xk::PhysicsBody(m_pSceneMgr, "box1", rbinfo);
+        Xk::world::instance().addEntity("box1", g_pBoxBody);
 
         Ogre::Entity* pBoxEntity = m_pSceneMgr->createEntity( "box1", "1x1x1box.mesh" );
-        pBody->getNode()->attachObject( pBoxEntity );
+        g_pBoxBody->getNode()->attachObject( pBoxEntity );
+
+        Ogre::Vector3 beginPos = m_pCamera->getPosition();
+        Ogre::Vector3 endPos = g_pRBChar->getNode()->getPosition();
+        g_pLine = new Xk::debug::Line( beginPos, endPos );
+
+        Ogre::SceneNode* pLineNode = m_pSceneMgr->getRootSceneNode()->createChildSceneNode();
+        pLineNode->attachObject( g_pLine->getManualObject() );
 
         g_pThirdCamera = new ThirdPersonCamera( m_pCamera, g_pRBChar->getNode() );
         g_pThirdCamera->setup();
@@ -227,12 +242,40 @@ public:
                     //pBox->getNode()->scale(0.2, 0.2, 0.2);
                     Ogre::Entity* pBoxEntity = m_pSceneMgr->createEntity(strBoxName, "1x1x1box.mesh");
                     pBox->getNode()->attachObject(pBoxEntity);
-                    Ogre::ManualObject* pDbgEntity = Xk::BuildDebugBox(m_pSceneMgr, 0.5f, strDbgBoxName, "Ogre/Skin");
+                    //Ogre::ManualObject* pDbgEntity = Xk::BuildDebugBox(m_pSceneMgr, 0.5f, strDbgBoxName, "Ogre/Skin");
+                    Ogre::ManualObject* pDbgEntity = Xk::debug::createBox( m_pSceneMgr, 0.5f, strDbgBoxName );
                     pBox->getNode()->attachObject(pDbgEntity);
                 }
             }
         }
         
+        Xk::debug::RagdollConstraintViewer* pViewer = new Xk::debug::RagdollConstraintViewer(
+            "debugragdoll",
+            HK_REAL_PI * -0.2f,
+            HK_REAL_PI * 0.1f,
+            HK_REAL_PI * 0.3f,
+            Ogre::Vector3(0,0,0) );
+        Ogre::SceneNode* pNodeCone = m_pSceneMgr->getRootSceneNode()->createChildSceneNode();
+        pNodeCone->attachObject( pViewer->getManualObject() );
+
+        pNodeCone->setPosition( 20, 10, 20 );
+
+        Ogre::Vector3 v1( 1, 1, 0 );
+        Ogre::Vector3 vecAxis( 1, 1, 0 );
+
+        v1.normalise();
+        vecAxis.normalise();
+
+        //求垂直向量，作为旋转轴
+        Ogre::Vector3 vecCZ = Ogre::Vector3(0,0,1);
+        printf("vecCZ:(%f, %f, %f)\n", vecCZ.x, vecCZ.y, vecCZ.z );
+
+        //求角度
+        float fAngle = acos( v1.dotProduct( vecAxis ) );
+        Ogre::Radian rad( fAngle );
+        printf("Degree: %f\n", rad.valueDegrees() );
+
+
     }
 
 };

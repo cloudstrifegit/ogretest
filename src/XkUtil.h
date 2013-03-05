@@ -30,22 +30,73 @@ static Ogre::Quaternion toQuaternion(const hkQuaternion& q)
     return Ogre::Quaternion(q(3), q(0), q(1), q(2));
 }
 
-static Ogre::ManualObject* BuildDebugAxis( Ogre::SceneManager* pMgr, float fLineLen, std::string strName )
+static Ogre::ManualObject* BuildDebugAxis( Ogre::SceneManager* pMgr, float fLineLen, std::string strName, float fArrowLen = 0.2)
 {
     Ogre::ManualObject* pObj = pMgr->createManualObject( strName );
     pObj->begin( "BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST );
 
+    //X
     pObj->position( 0, 0, 0 );
     pObj->colour( 1.0f, 0, 0 );
     pObj->position( fLineLen, 0, 0 );
+
+    pObj->position( fLineLen, 0, 0 );
+    pObj->colour( 1.0f, 0, 0 );
+    pObj->position( fLineLen-fArrowLen, fArrowLen, 0);
+
+    pObj->position( fLineLen, 0, 0 );
+    pObj->colour( 1.0f, 0, 0 );
+    pObj->position( fLineLen-fArrowLen, -fArrowLen, 0 );
+
+    pObj->position( fLineLen, 0, 0 );
+    pObj->colour( 1.0f, 0, 0 );
+    pObj->position( fLineLen-fArrowLen, 0, fArrowLen );
     
+    pObj->position( fLineLen, 0, 0 );
+    pObj->colour( 1.0f, 0, 0 );
+    pObj->position( fLineLen-fArrowLen, 0, -fArrowLen );
+
+    //Y
     pObj->position( 0, 0, 0 );
     pObj->colour( 0, 1.0f, 0 );
     pObj->position( 0, fLineLen, 0 );
 
+    pObj->position( 0, fLineLen, 0 );
+    pObj->colour( 0, 1.0f, 0 );
+    pObj->position( fArrowLen, fLineLen-fArrowLen, 0 );
+
+    pObj->position( 0, fLineLen, 0 );
+    pObj->colour( 0, 1.0f, 0 );
+    pObj->position( -fArrowLen, fLineLen-fArrowLen, 0);
+
+    pObj->position( 0, fLineLen, 0 );
+    pObj->colour( 0, 1.0f, 0 );
+    pObj->position( 0, fLineLen-fArrowLen, fArrowLen );
+
+    pObj->position( 0, fLineLen, 0 );
+    pObj->colour( 0, 1.0f, 0 );
+    pObj->position( 0, fLineLen-fArrowLen, -fArrowLen );
+
+    //Z
     pObj->position( 0, 0, 0 );
     pObj->colour( 0, 0, 1.0f );
     pObj->position( 0, 0, fLineLen );
+
+    pObj->position( 0, 0, fLineLen );
+    pObj->colour( 0, 0, 1.0f );
+    pObj->position( 0, fArrowLen, fLineLen-fArrowLen );
+
+    pObj->position( 0, 0, fLineLen );
+    pObj->colour( 0, 0, 1.0f );
+    pObj->position( 0, -fArrowLen, fLineLen-fArrowLen );
+
+    pObj->position( 0, 0, fLineLen );
+    pObj->colour( 0, 0, 1.0f );
+    pObj->position( fArrowLen, 0, fLineLen-fArrowLen );
+
+    pObj->position( 0, 0, fLineLen );
+    pObj->colour( 0, 0, 1.0f );
+    pObj->position( -fArrowLen, 0, fLineLen-fArrowLen );
 
     pObj->end();
 
